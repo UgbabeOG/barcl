@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barclays — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="dashboard">
+    <div class="notif-bar">
+      ✅ &nbsp;Your statements are ready to view. &nbsp;<a>Download now</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      🎉 &nbsp;You have a new Premier offer available. &nbsp;<a>View offer</a>
+    </div>
+    <nav class="dash-nav">
+      <div class="dash-nav-left">
+        <div class="barclays-logo">
+          <img src="barclays-investment-bank-logo-115630277832rlaxpy1ry.png" alt="Barclays Logo" height="34">
+          <span class="logo-text" style="font-size:1.2rem">BARCLAYS</span>
+        </div>
+        <div class="dash-nav-links">
+          <button class="nav-tab active" onclick="showPanel('overview',this)">Overview</button>
+          <button class="nav-tab" onclick="showPanel('transactions',this)">Transactions</button>
+          <button class="nav-tab" onclick="showPanel('transfer',this)">Transfers</button>
+          <button class="nav-tab" onclick="showPanel('cards',this)">Cards</button>
+        </div>
+      </div>
+      <div class="dash-nav-right">
+        <div class="user-pill">
+          <div class="user-avatar">DH</div>
+          <span class="user-name">Mr D. Henshall</span>
+        </div>
+        <button class="logout-btn" onclick="window.location.href='landing.html'">Log out</button>
+      </div>
+    </nav>
+
+    <div id="panel-overview" class="dash-panel active">
+      <div class="greeting-bar">
+        <div>
+          <h2>Good afternoon, Douglas 👋</h2>
+          <p>Here's a summary of your Barclays accounts</p>
+        </div>
+        <div class="greeting-date">
+          <span>Last login: Today, 09:14</span>
+          <strong id="todayDate"></strong>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <div class="qa-btn" onclick="showPanel('transfer',document.querySelector('.nav-tab:nth-child(3)'))">
+          <div class="qa-icon">↗</div>
+          <div class="qa-label">Send Money</div>
+        </div>
+        <div class="qa-btn" onclick="showPanel('transactions',document.querySelector('.nav-tab:nth-child(2)'))">
+          <div class="qa-icon">🧾</div>
+          <div class="qa-label">Statements</div>
+        </div>
+        <div class="qa-btn">
+          <div class="qa-icon">💳</div>
+          <div class="qa-label">Cards</div>
+        </div>
+        <div class="qa-btn">
+          <div class="qa-icon">📞</div>
+          <div class="qa-label">Contact Us</div>
+        </div>
+      </div>
+
+      <div class="accounts-grid">
+        <div class="acct-card">
+          <div class="acct-type">Current Account</div>
+          <div class="acct-name">Barclays Premier Account</div>
+          <div class="acct-balance">£6,012,847.33</div>
+          <div class="acct-number">Sort: 20-14-55 · Acc: 83741920</div>
+          <span class="acct-badge badge-premier">Premier</span>
+        </div>
+        <div class="acct-card">
+          <div class="acct-type">Savings Account</div>
+          <div class="acct-name">Rainy Day Saver</div>
+          <div class="acct-balance">£850,000.00</div>
+          <div class="acct-number">Sort: 20-14-55 · Acc: 83741955</div>
+          <span class="acct-badge badge-savings">4.25% AER</span>
+        </div>
+        <div class="acct-card">
+          <div class="acct-type">Investment Account</div>
+          <div class="acct-name">Smart Investor Portfolio</div>
+          <div class="acct-balance">£1,240,362.90</div>
+          <div class="acct-number">Ref: INV-DH-002941</div>
+          <span class="acct-badge badge-invest">+8.4% YTD</span>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="widget">
+          <div class="widget-title">
+            Recent Transactions
+            <a onclick="showPanel('transactions',document.querySelector('.nav-tab:nth-child(2)'))">View all →</a>
+          </div>
+          <div class="txn-mini" id="miniTxnList"></div>
+        </div>
+        <div class="widget">
+          <div class="widget-title">Monthly Spend Breakdown</div>
+          <div class="spend-bars" id="spendBars"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="panel-transactions" class="dash-panel">
+      <div class="panel-title">Transaction History</div>
+      <div class="panel-sub">Premier Current Account — 83741920</div>
+      <div class="txn-filters">
+        <input class="txn-search" placeholder="🔍  Search transactions…" oninput="filterTxns(this.value)">
+        <button class="filter-chip active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-chip" onclick="setFilter('in',this)">Money In</button>
+        <button class="filter-chip" onclick="setFilter('out',this)">Money Out</button>
+        <button class="filter-chip" onclick="setFilter('pending',this)">Pending</button>
+      </div>
+      <div class="txn-table">
+        <div class="txn-table-head">
+          <span>Merchant / Description</span>
+          <span>Date</span>
+          <span>Category</span>
+          <span>Status</span>
+          <span style="text-align:right">Amount</span>
+        </div>
+        <div id="txnList"></div>
+      </div>
+    </div>
+
+    <div id="panel-transfer" class="dash-panel">
+      <div class="panel-title">Make a Transfer</div>
+      <div class="panel-sub">Send money securely using Faster Payments</div>
+      <div class="transfer-layout">
+        <div>
+          <div class="transfer-form-card" id="transferForm">
+            <h3>New Payment</h3>
+            <p class="tf-sub">Funds arrive within 2 hours, usually instantly</p>
+            <div class="tf-field">
+              <label>From Account</label>
+              <select>
+                <option>Premier Current Account — £6,012,847.33</option>
+                <option>Rainy Day Saver — £850,000.00</option>
+              </select>
+            </div>
+            <div class="tf-field">
+              <label>Recipient Name</label>
+              <input type="text" id="tf_name" placeholder="Full name">
+            </div>
+            <div class="tf-row">
+              <div class="tf-field">
+                <label>Sort Code</label>
+                <input type="text" id="tf_sort" placeholder="00-00-00" maxlength="8">
+              </div>
+              <div class="tf-field">
+                <label>Account Number</label>
+                <input type="text" id="tf_acc" placeholder="8 digits" maxlength="8">
+              </div>
+            </div>
+            <div class="tf-field">
+              <label>Amount (£)</label>
+              <div class="tf-amount-wrap">
+                <span class="currency">£</span>
+                <input type="number" id="tf_amount" placeholder="0.00">
+              </div>
+            </div>
+            <div class="tf-field">
+              <label>Reference</label>
+              <input type="text" id="tf_ref" placeholder="What's it for?">
+            </div>
+            <button class="transfer-btn" onclick="doTransfer()">Confirm Transfer</button>
+          </div>
+          <div class="transfer-success" id="transferSuccess">
+            <div class="success-circle">✓</div>
+            <h3>Transfer Sent!</h3>
+            <p id="transferSuccessMsg">Your payment has been sent successfully.</p>
+            <div class="transfer-ref" id="transferRef">Ref: BRC-000000</div>
+            <button class="back-btn" onclick="resetTransfer()">Make another payment</button>
+          </div>
+        </div>
+        <div class="transfer-sidebar">
+          <div class="transfer-history-card">
+            <h4>Recent Payees</h4>
+            <div class="recent-transfer">
+              <div class="rt-avatar">SP</div>
+              <div class="rt-info"><div class="rt-name">Sarah Patterson</div><div class="rt-date">12 Jun 2026</div></div>
+              <div class="rt-amount">−£15,000</div>
+            </div>
+            <div class="recent-transfer">
+              <div class="rt-avatar">JW</div>
+              <div class="rt-info"><div class="rt-name">James Whitmore</div><div class="rt-date">8 Jun 2026</div></div>
+              <div class="rt-amount">−£3,500</div>
+            </div>
+            <div class="recent-transfer">
+              <div class="rt-avatar">CM</div>
+              <div class="rt-info"><div class="rt-name">Clara McLean</div><div class="rt-date">2 Jun 2026</div></div>
+              <div class="rt-amount">−£8,000</div>
+            </div>
+            <div class="recent-transfer">
+              <div class="rt-avatar">RH</div>
+              <div class="rt-info"><div class="rt-name">Robert Henderson</div><div class="rt-date">28 May 2026</div></div>
+              <div class="rt-amount">−£25,000</div>
+            </div>
+          </div>
+          <div class="transfer-history-card">
+            <h4>Payment Limits</h4>
+            <div style="display:flex;flex-direction:column;gap:0.75rem">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem">
+                  <span style="font-size:0.8rem;color:var(--gray-600)">Daily limit used</span>
+                  <span style="font-size:0.8rem;font-weight:600">£51,500 / £250,000</span>
+                </div>
+                <div style="height:6px;background:var(--gray-200);border-radius:3px;overflow:hidden">
+                  <div style="height:100%;width:20%;background:var(--blue);border-radius:3px"></div>
+                </div>
+              </div>
+              <p style="font-size:0.78rem;color:var(--gray-400)">Premier customers enjoy enhanced daily limits. Contact your relationship manager to increase.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="panel-cards" class="dash-panel">
+      <div class="panel-title">Cards & Services</div>
+      <div class="panel-sub">Manage your Barclays cards</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <div class="widget">
+          <div style="background:linear-gradient(135deg,#003087,#0062A3);border-radius:12px;padding:1.8rem;color:#fff;margin-bottom:1.2rem;position:relative;overflow:hidden">
+            <div style="position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.06)"></div>
+            <div style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:0.5rem">Barclays Premier Visa</div>
+            <div style="font-family:monospace;font-size:1rem;letter-spacing:0.15em;margin-bottom:1.2rem">•••• •••• •••• 4821</div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-end">
+              <div>
+                <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);margin-bottom:0.15rem">Card holder</div>
+                <div style="font-size:0.88rem;font-weight:600">MR DOUGLAS HENSHALL</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);margin-bottom:0.15rem">Expires</div>
+                <div style="font-size:0.88rem;font-weight:600">09/28</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+            <button style="padding:0.65rem;border:1.5px solid var(--gray-200);border-radius:var(--radius);background:var(--white);font-family:'Barlow',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;color:var(--gray-700)">🔒 Freeze card</button>
+            <button style="padding:0.65rem;border:1.5px solid var(--gray-200);border-radius:var(--radius);background:var(--white);font-family:'Barlow',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;color:var(--gray-700)">📋 View PIN</button>
+            <button style="padding:0.65rem;border:1.5px solid var(--gray-200);border-radius:var(--radius);background:var(--white);font-family:'Barlow',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;color:var(--gray-700)">🌍 Travel mode</button>
+            <button style="padding:0.65rem;border:1.5px solid var(--gray-200);border-radius:var(--radius);background:var(--white);font-family:'Barlow',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;color:var(--gray-700)">🔄 Replace card</button>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-title">Card Spending This Month</div>
+          <div style="display:flex;flex-direction:column;gap:0.8rem">
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:0.25rem"><span style="font-size:0.85rem">Total spent</span><span style="font-size:0.9rem;font-weight:700;color:var(--dark-blue)">£12,490.22</span></div></div>
+            <div style="height:1px;background:var(--gray-200)"></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:0.82rem;color:var(--gray-600)">Credit limit</span><span style="font-size:0.88rem;font-weight:600">£100,000</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:0.82rem;color:var(--gray-600)">Available credit</span><span style="font-size:0.88rem;font-weight:600;color:var(--green)">£87,509.78</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:0.82rem;color:var(--gray-600)">Cashback earned</span><span style="font-size:0.88rem;font-weight:600;color:var(--green)">+£249.80</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:0.82rem;color:var(--gray-600)">Payment due</span><span style="font-size:0.88rem;font-weight:600;color:var(--amber)">28 Jul 2026</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

